@@ -1,0 +1,29 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+
+# Set up Chrome options to enable mobile emulation
+chrome_options = Options()
+chrome_options.add_experimental_option('mobileEmulation', {'deviceName': 'iPhone X'})
+
+# Set up the Chrome driver with the DevTools Protocol
+chrome_driver_path = 'path_to_chromedriver'
+chrome_service = Service(chrome_driver_path)
+driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+
+# Open the given site in mobile responsive mode
+driver.get('https://derivfe.github.io/qa-test/settings')
+
+# Observe the landing page for any responsive issues
+# Verify the profile setting form
+
+# Example: Automate verification of an element on the page
+profile_form = driver.find_element(By.ID, 'profile-form')
+if profile_form.is_displayed():
+    print("Profile setting form is displayed")
+
+# Close the browser
+driver.quit()
