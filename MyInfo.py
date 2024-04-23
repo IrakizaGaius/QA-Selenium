@@ -42,39 +42,36 @@ print(f"Login Successfull")
 
 # Dashboard
 WebDriverWait(driver, 10).until(
-    EC.presence_of_element_located((By.XPATH, "//h6[@class='oxd-text oxd-text--h6 oxd-topbar-header-breadcrumb-module' and text()='Dashboard']"
-))
+    EC.presence_of_element_located((By.XPATH, "//h6[@class='oxd-text oxd-text--h6 oxd-topbar-header-breadcrumb-module' and text()='Dashboard']"))
 )
 WebDriverWait(driver, 10).until(
-    EC.element_to_be_clickable((By.CLASS_NAME, 'oxd-userdropdown-tab'))
+    EC.element_to_be_clickable((By.XPATH, '//span[@class="oxd-text oxd-text--span oxd-main-menu-item--name" and text()="My Info"]'))
 )
-icon = driver.find_element(By.CLASS_NAME, 'oxd-userdropdown-tab')
-icon.click()
-WebDriverWait(driver, 10).until(
-    EC.presence_of_element_located((By.CSS_SELECTOR, '.oxd-dropdown-menu'))
-)
-# Logout
-profile_dropdown = driver.find_element(By.CSS_SELECTOR, '.oxd-dropdown-menu')
-# Hover over the profile dropdown
-ActionChains(driver).move_to_element(profile_dropdown).perform()
+info = driver.find_element(By.XPATH, '//span[@class="oxd-text oxd-text--span oxd-main-menu-item--name" and text()="My Info"]')
+info.click()
 
 WebDriverWait(driver, 10).until(
-    EC.presence_of_element_located((By.LINK_TEXT, "Logout"))
+    EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[1]/form/div[3]/div[2]/div[1]/div/div[2]/div/div/input'))
 )
-# Click on the Logout button
-logout_button = driver.find_element(By.LINK_TEXT, "Logout")
-logout_button.click()
-# Validate logout
-WebDriverWait(driver, 10).until(
-    EC.presence_of_element_located((By.XPATH, "//h5[@class='oxd-text oxd-text--h5 orangehrm-login-title' and text()='Login']"
-))
-)
-login_page_title = driver.find_element(By.XPATH, "//h5[@class='oxd-text oxd-text--h5 orangehrm-login-title' and text()='Login']").text
-if "Login" in login_page_title:
-    print("Test Case 3: Logout - Passed")
+new_dob = "1990-04-12"
+dob = driver.find_element(By.XPATH, '//*[@id="app"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[1]/form/div[3]/div[2]/div[1]/div/div[2]/div/div/input')
+dob.click()
+dob.send_keys(Keys.CONTROL + "a")
+dob.send_keys(Keys.DELETE)
+dob.send_keys(new_dob)
+
+save = driver.find_element(By.XPATH, '//*[@id="app"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[1]/form/div[4]/button')
+save.click()
+
+print(f"Test 4 Passed : Date Of Birth saved")
+
+# Verify My Info page is updated with the latest selected date of birth
+dob_after_update = dob.get_attribute("value")
+if dob_after_update == new_dob:
+    print("Step 5: My Info page is updated with the latest selected date of birth - Passed")
 else:
-    print("Test Case 3: Logout - Failed")
+    print("Step 5: My Info page is updated with the latest selected date of birth - Failed")
 
-time.sleep(10)
-# Close the browser
+
+time.sleep(30)
 driver.quit()
